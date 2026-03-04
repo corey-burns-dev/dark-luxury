@@ -1,0 +1,106 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import { currency, products, findProductById } from '../../data/storefront';
+import AddToCartButton from '../../components/AddToCartButton';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { productId: product.id },
+  }));
+}
+
+const { productId } = Astro.params;
+const product = productId ? findProductById(productId) : null;
+
+if (!product) {
+  return Astro.redirect('/404');
+}
+
+const recommendations = products.filter((item) => item.id !== product.id).slice(0, 3);
+---
+
+<Layout title={product.name} description={product.description}>
+  <section class="content-wrap product-detail">
+    <div class="product-crumbs">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/shop">Shop</a>
+      <span>/</span>
+      <strong>{product.name}</strong>
+    </div>
+
+    <div class="product-layout">
+      <div class="product-gallery">
+        <div class="image-shell">
+          {product.badge ? <span class="product-badge">{product.badge}</span> : null}
+          <Image 
+            src={product.image} 
+            alt={product.name} 
+            width={800} 
+            height={1000}
+            loading="eager" 
+          />
+        </div>
+      </div>
+
+      <div class="product-copy">
+        <p class="kicker">{product.category}</p>
+        <h1>{product.name}</h1>
+        <strong>{currency.format(product.price)}</strong>
+        <p>{product.description}</p>
+        <ul>
+          <li>Complimentary tailoring consultation included</li>
+          <li>Insured delivery with signature required</li>
+          <li>14-day returns on unworn items</li>
+        </ul>
+        <div class="hero-actions">
+          <AddToCartButton client:load productId={product.id} className="button button-primary">
+            Add to cart
+          </AddToCartButton>
+          <a class="button button-ghost" href="/shop">
+            Continue shopping
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>Recommended</h2>
+      <a href="/shop">View collection</a>
+    </div>
+
+    <div class="product-grid grid-3">
+      {recommendations.map((item) => (
+        <article class="product-card">
+          <a class="image-shell" href={`/product/${item.id}`}>
+            {item.badge ? <span class="product-badge">{item.badge}</span> : null}
+            <Image 
+              src={item.image} 
+              alt={item.name} 
+              width={400} 
+              height={500}
+              loading="lazy" 
+            />
+          </a>
+          <div class="product-meta">
+            <div>
+              <h3>{item.name}</h3>
+              <p>
+                {item.category} | {item.note}
+              </p>
+            </div>
+            <div class="price-row">
+              <strong>{currency.format(item.price)}</strong>
+              <AddToCartButton client:load productId={item.id} className="button button-line">
+                Add
+              </AddToCartButton>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>

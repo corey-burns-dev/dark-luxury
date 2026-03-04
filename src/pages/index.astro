@@ -1,0 +1,197 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import {
+  categories,
+  currency,
+  faqs,
+  journalEntries,
+  products,
+  services,
+  testimonials,
+} from "../data/storefront";
+import AddToCartButton from '../components/AddToCartButton';
+
+const featuredProducts = products.slice(0, 4);
+const latestStories = journalEntries.slice(0, 3);
+---
+
+<Layout title="Home">
+  <section class="hero" id="home">
+    <div class="hero-media" aria-hidden="true"></div>
+    <div class="hero-content content-wrap">
+      <p class="kicker fade-in-up">Spring Summer 2026</p>
+      <h1 class="fade-in-up-delay-1">Elegance, refined in shadow.</h1>
+      <p class="lead fade-in-up-delay-2">
+        A modern maison for tailored essentials, rare fragrances, and restrained design.
+      </p>
+      <div class="hero-actions fade-in-up-delay-3">
+        <a class="button button-primary" href="/shop">
+          Discover Collection
+        </a>
+        <a class="button button-ghost" href="/journal">
+          Read the Story
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>The Selection.</h2>
+      <a href="/shop">View all pieces</a>
+    </div>
+
+    <ul class="showcase-row">
+      {featuredProducts.map((item) => (
+        <li class="showcase-card">
+          <a class="image-shell" href={`/product/${item.id}`}>
+            <Image 
+              src={item.image} 
+              alt={item.name} 
+              width={400} 
+              height={533}
+              loading="lazy" 
+            />
+          </a>
+          <h3>{item.name}</h3>
+          <p>{currency.format(item.price)} USD</p>
+          <AddToCartButton client:load productId={item.id} />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>House Categories</h2>
+    </div>
+    <div class="category-grid">
+      {categories.map((category) => (
+        <article class="category-card">
+          <Image 
+            src={category.image} 
+            alt={category.name} 
+            width={700} 
+            height={933}
+            loading="lazy" 
+          />
+          <div>
+            <h3>{category.name}</h3>
+            <a href="/shop">Explore</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="feature">
+    <div class="feature-media" aria-hidden="true"></div>
+    <div class="feature-copy">
+      <p class="kicker">Exclusivity</p>
+      <h2>Tailored for the few.</h2>
+      <p>
+        Every material is selected for touch, drape, and longevity. We design quietly and
+        release intentionally, in small numbered runs.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-line" href="/journal">
+          Enter the journal
+        </a>
+        <a class="button button-ghost" href="/about">
+          Discover the maison
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>Maison Services</h2>
+    </div>
+    <div class="service-grid">
+      {services.map((service, index) => (
+        <article>
+          <small>{String(index + 1).padStart(2, "0")}</small>
+          <h3>{service.title}</h3>
+          <p>{service.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>Client Notes</h2>
+    </div>
+    <div class="testimonial-grid">
+      {testimonials.map((item) => (
+        <blockquote>
+          <p>"{item.quote}"</p>
+          <footer>
+            <strong>{item.name}</strong>
+            <span>{item.role}</span>
+          </footer>
+        </blockquote>
+      ))}
+    </div>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>Latest Journal</h2>
+      <a href="/journal">See all entries</a>
+    </div>
+    <div class="journal-grid">
+      {latestStories.map((entry) => (
+        <article>
+          <a href={`/journal/${entry.slug}`}>
+            <Image 
+              src={entry.image} 
+              alt={entry.title} 
+              width={400} 
+              height={300}
+              loading="lazy" 
+            />
+          </a>
+          <div class="journal-card-body">
+            <small>
+              {entry.topic} | {entry.published}
+            </small>
+            <h3>{entry.title}</h3>
+            <p>{entry.excerpt}</p>
+            <p class="journal-meta">{entry.readTime}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>FAQ</h2>
+    </div>
+    <div class="faq-list">
+      {faqs.map((faq) => (
+        <details>
+          <summary>{faq.question}</summary>
+          <p>{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="newsletter content-wrap">
+    <p class="kicker">Private Releases</p>
+    <h2>Receive collection previews before public launch.</h2>
+    <form>
+      <label class="sr-only" for="email-input-home">
+        Email
+      </label>
+      <input id="email-input-home" placeholder="Email address" type="email" />
+      <button class="button button-primary" type="submit">
+        Join list
+      </button>
+    </form>
+  </section>
+</Layout>

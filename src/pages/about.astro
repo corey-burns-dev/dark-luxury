@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {
+  houseMilestones,
+  housePrinciples,
+  services,
+  studioLocations,
+  testimonials,
+} from "../data/storefront";
+---
+
+<Layout title="About">
+  <section class="page-header content-wrap">
+    <p class="kicker">The Maison</p>
+    <h1>Built for clients who value discretion and craft.</h1>
+    <p>
+      Dark Luxury is a modern house focused on precise tailoring, material integrity, and a
+      service model that treats every order as a private commission.
+    </p>
+  </section>
+
+  <section class="section content-wrap about-grid">
+    <article class="about-panel">
+      <h2>House Principles</h2>
+      <div class="about-stack">
+        {housePrinciples.map((principle) => (
+          <div>
+            <h3>{principle.title}</h3>
+            <p>{principle.body}</p>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <article class="about-panel">
+      <h2>Service Program</h2>
+      <div class="about-stack">
+        {services.map((service) => (
+          <div>
+            <h3>{service.title}</h3>
+            <p>{service.body}</p>
+          </div>
+        ))}
+      </div>
+    </article>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>House Timeline</h2>
+      <p>2021 - 2026</p>
+    </div>
+    <div class="milestone-grid">
+      {houseMilestones.map((item) => (
+        <article>
+          <small>{item.year}</small>
+          <p>{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>Studio Locations</h2>
+      <p>Appointments recommended</p>
+    </div>
+    <div class="location-grid">
+      {studioLocations.map((location) => (
+        <article>
+          <h3>{location.city}</h3>
+          <p>{location.address}</p>
+          <p>{location.hours}</p>
+          <p>{location.note}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section content-wrap">
+    <div class="section-head">
+      <h2>Client Perspective</h2>
+      <a href="/journal">Read the journal</a>
+    </div>
+    <div class="testimonial-grid">
+      {testimonials.map((item) => (
+        <blockquote>
+          <p>"{item.quote}"</p>
+          <footer>
+            <strong>{item.name}</strong>
+            <span>{item.role}</span>
+          </footer>
+        </blockquote>
+      ))}
+    </div>
+  </section>
+
+  <section class="newsletter content-wrap">
+    <p class="kicker">Appointments</p>
+    <h2>Request a private consultation with our studio team.</h2>
+    <div class="hero-actions">
+      <a class="button button-primary" href="/shop">
+        Shop collection
+      </a>
+      <a class="button button-ghost" href="/journal">
+        Explore journal
+      </a>
+    </div>
+  </section>
+</Layout>

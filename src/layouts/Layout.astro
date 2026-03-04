@@ -1,0 +1,80 @@
+---
+import '../index.css';
+import Header from '../components/Header';
+import CartDrawer from '../components/CartDrawer';
+
+interface Props {
+	title: string;
+  description?: string;
+}
+
+const { title, description = "A modern maison for tailored essentials, rare fragrances, and restrained design." } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | Dark Luxury</title>
+    
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	</head>
+	<body>
+    <div class="site-shell">
+      <Header client:load />
+      
+      <main class="page-main">
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <div class="footer-col">
+            <h4>Dark Luxury.</h4>
+            <p>
+              A modern maison for tailored essentials, rare fragrances, and restrained design.
+              Founded in 2021.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Navigate</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/shop">Collection</a></li>
+              <li><a href="/journal">Journal</a></li>
+              <li><a href="/about">Maison</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="/about">Private Appointments</a></li>
+              <li><a href="/about">Tailoring Studio</a></li>
+              <li><a href="/about">White-Glove Delivery</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Studios</h4>
+            <ul>
+              <li><a href="/about">New York, SoHo</a></li>
+              <li><a href="/about">Paris, Rive Gauche</a></li>
+              <li><a href="/about">Milan, Brera</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2026 Dark Luxury Holdings. All rights reserved.</span>
+          <span>New York &middot; Paris &middot; Milan</span>
+        </div>
+      </footer>
+
+      <CartDrawer client:load />
+    </div>
+	</body>
+</html>

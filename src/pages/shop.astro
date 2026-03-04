@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Shop from '../components/Shop';
+import { products } from '../data/storefront';
+---
+
+<Layout title="Shop">
+  <section class="page-header content-wrap">
+    <p class="kicker">Collection</p>
+    <h1>Curated Storefront</h1>
+    <p>Tailored pieces and objets selected for form, utility, and permanence.</p>
+  </section>
+
+  <Shop client:load initialProducts={products} />
+</Layout>

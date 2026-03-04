@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import { journalEntries } from '../../data/storefront';
+
+const [leadStory, ...stories] = journalEntries;
+---
+
+<Layout title="Journal">
+  <section class="page-header content-wrap">
+    <p class="kicker">Journal</p>
+    <h1>Notes from the Maison</h1>
+    <p>Craft, materials, and process documentation from our teams in studio and atelier.</p>
+  </section>
+
+  {leadStory ? (
+    <>
+      <section class="content-wrap journal-lead">
+        <article>
+          <Image 
+            src={leadStory.image} 
+            alt={leadStory.title} 
+            width={1200} 
+            height={600}
+            loading="eager" 
+          />
+          <div>
+            <p class="kicker">
+              {leadStory.topic} | {leadStory.published}
+            </p>
+            <h2>{leadStory.title}</h2>
+            <p>{leadStory.body}</p>
+            <div class="hero-actions">
+              <a class="button button-line" href={`/journal/${leadStory.slug}`}>
+                Read article
+              </a>
+              <a class="button button-ghost" href="/shop">
+                Shop related pieces
+              </a>
+            </div>
+            <p class="journal-meta">{leadStory.readTime}</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="section content-wrap">
+        <div class="section-head">
+          <h2>Recent Stories</h2>
+          <p>Editorial cadence: bi-weekly</p>
+        </div>
+        <div class="journal-grid">
+          {stories.map((entry) => (
+            <article>
+              <a href={`/journal/${entry.slug}`}>
+                <Image 
+                  src={entry.image} 
+                  alt={entry.title} 
+                  width={400} 
+                  height={300}
+                  loading="lazy" 
+                />
+              </a>
+              <div class="journal-card-body">
+                <small>
+                  {entry.topic} | {entry.published}
+                </small>
+                <h3>{entry.title}</h3>
+                <p>{entry.excerpt}</p>
+                <p class="journal-meta">{entry.readTime}</p>
+                <a class="button button-line" href={`/journal/${entry.slug}`}>
+                  Continue reading
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </>
+  ) : (
+    <section class="page-header content-wrap">
+      <p>Editorial stories are being prepared for release.</p>
+      <a class="button button-primary" href="/shop">
+        Return to collection
+      </a>
+    </section>
+  )}
+
+  <section class="newsletter content-wrap">
+    <p class="kicker">Journal Dispatch</p>
+    <h2>Receive atelier notes and release commentary every Friday.</h2>
+    <form>
+      <label class="sr-only" for="email-input-journal">
+        Email
+      </label>
+      <input id="email-input-journal" placeholder="Email address" type="email" />
+      <button class="button button-primary" type="submit">
+        Subscribe
+      </button>
+    </form>
+  </section>
+</Layout>

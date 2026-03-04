@@ -1,27 +1,27 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { currency, products } from "../data/storefront";
-
-type ShopPageProps = {
-  onAddToCart: (id: string) => void;
-};
+import { currency, type Product } from "../data/storefront";
+import { addToCart } from "../stores/cartStore";
 
 type SortMode = "featured" | "price-asc" | "price-desc" | "name-asc";
 
-function ShopPage({ onAddToCart }: ShopPageProps) {
+interface Props {
+  initialProducts: Product[];
+}
+
+export default function Shop({ initialProducts }: Props) {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortMode, setSortMode] = useState<SortMode>("featured");
 
   const filterCategories = useMemo(
-    () => ["All", ...new Set(products.map((product) => product.category))],
-    [],
+    () => ["All", ...new Set(initialProducts.map((product) => product.category))],
+    [initialProducts],
   );
 
   const filteredProducts = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    const visibleProducts = products.filter((product) => {
+    const visibleProducts = initialProducts.filter((product) => {
       const matchesCategory = activeCategory === "All" || product.category === activeCategory;
       const matchesSearch =
         normalizedSearch.length === 0 ||
@@ -45,16 +45,10 @@ function ShopPage({ onAddToCart }: ShopPageProps) {
     }
 
     return visibleProducts;
-  }, [activeCategory, searchTerm, sortMode]);
+  }, [activeCategory, searchTerm, sortMode, initialProducts]);
 
   return (
-    <main className="page-main">
-      <section className="page-header content-wrap">
-        <p className="kicker">Collection</p>
-        <h1>Curated Storefront</h1>
-        <p>Tailored pieces and objets selected for form, utility, and permanence.</p>
-      </section>
-
+    <>
       <section className="content-wrap shop-tools">
         <div className="filter-row">
           {filterCategories.map((category) => (
@@ -103,10 +97,10 @@ function ShopPage({ onAddToCart }: ShopPageProps) {
         <div className="product-grid">
           {filteredProducts.map((item) => (
             <article className="product-card" key={item.id}>
-              <Link className="image-shell" to={`/product/${item.id}`}>
+              <a className="image-shell" href={`/product/${item.id}`}>
                 {item.badge ? <span className="product-badge">{item.badge}</span> : null}
                 <img alt={item.name} loading="lazy" src={item.image} />
-              </Link>
+              </a>
               <div className="product-meta">
                 <div>
                   <h3>{item.name}</h3>
@@ -118,7 +112,7 @@ function ShopPage({ onAddToCart }: ShopPageProps) {
                   <strong>{currency.format(item.price)}</strong>
                   <button
                     className="button button-line"
-                    onClick={() => onAddToCart(item.id)}
+                    onClick={() => addToCart(item.id)}
                     type="button"
                   >
                     Add
@@ -129,8 +123,6 @@ function ShopPage({ onAddToCart }: ShopPageProps) {
           ))}
         </div>
       </section>
-    </main>
+    </>
   );
 }
-
-export default ShopPage;

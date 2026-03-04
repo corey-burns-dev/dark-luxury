@@ -138,7 +138,7 @@ export const products: Product[] = [
     description:
       "Slow-burning wax blend poured in smoked glass, inspired by late-night library interiors.",
     image:
-      "https://images.unsplash.com/photo-1602874801006-6ea5b53bd8a6?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=1200",
   },
   {
     id: "nightfall-glasses",
